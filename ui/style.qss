@@ -1,0 +1,126 @@
+QMainWindow, QWidget#centralwidget {
+    background-color: #181C23;
+    border-radius: 16px;
+}
+
+QWidget[card="true"] {
+    background-color: #23272E;
+    border-radius: 12px;
+}
+
+QFrame, QSplitter::handle {
+    background: #2C313A;
+}
+
+QLabel {
+    font-family: "San Francisco", Arial, "微软雅黑";
+    font-size: 15px;
+    color: #FFFFFF;
+}
+
+QLabel[hint="true"], QLabel[secondary="true"] {
+    color: #A0A4AB;
+    font-size: 13px;
+}
+
+QLineEdit, QListWidget, QTreeView, QTextEdit {
+    font-family: "San Francisco", Arial, "微软雅黑";
+    font-size: 13pt;
+    border: 1px solid #2C313A;
+    border-radius: 8px;
+    background: #23272E;
+    padding: 6px;
+    color: #fff;
+}
+QLineEdit:focus, QTextEdit:focus {
+    border: 1.5px solid #34C759;
+}
+
+QPushButton {
+    background-color: #23272E;
+    color: #fff;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    padding: 8px 16px;
+    font-family: 'San Francisco', '微软雅黑', Arial;
+    min-width: 260px;
+}
+QPushButton:hover {
+    background-color: #2C313A;
+}
+QPushButton:pressed {
+    background-color: #181C23;
+}
+
+QPushButton#macRedBtn {
+    background: #FF5F56;
+    border: none;
+    border-radius: 7px;
+    min-width: 14px;
+    max-width: 14px;
+    min-height: 14px;
+    max-height: 14px;
+    padding: 0;
+}
+QPushButton#macRedBtn:hover {
+    background: #E0483E;
+}
+QPushButton#macYellowBtn {
+    background: #FFBD2E;
+    border: none;
+    border-radius: 7px;
+    min-width: 14px;
+    max-width: 14px;
+    min-height: 14px;
+    max-height: 14px;
+    padding: 0;
+}
+QPushButton#macYellowBtn:hover {
+    background: #E1A116;
+}
+QPushButton#macGreenBtn {
+    background: #34C759;
+    border: none;
+    border-radius: 7px;
+    min-width: 14px;
+    max-width: 14px;
+    min-height: 14px;
+    max-height: 14px;
+    padding: 0;
+}
+QPushButton#macGreenBtn:hover {
+    background: #27C93F;
+}
+
+QProgressBar {
+    border-radius: 8px;
+    background: #23272E;
+    height: 16px;
+}
+QProgressBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #34C759, stop:1 #1ABC9C);
+    border-radius: 8px;
+}
+
+QSplitter::handle {
+    background: #2C313A;
+}
+
+QStatusBar, QLabel#statusLabel {
+    background: #23272E;
+    color: #A0A4AB;
+    font-size: 13px;
+    border-top: 1px solid #2C313A;
+}
+
+/* 控制台输出区域（QTextEdit）深色风格 */
+QTextEdit#consoleEdit, QTextEdit[console="true"] {
+    background: #181C23;
+    color: #A0A4AB;
+    font-family: "JetBrains Mono", "Consolas", "Menlo", "Monaco", "微软雅黑", monospace;
+    font-size: 14px;
+    border: 1px solid #2C313A;
+    border-radius: 8px;
+    padding: 6px;
+}
