@@ -9,6 +9,8 @@ from .widgets import MacTitleBar
 import os
 from PySide6.QtWebEngineWidgets import QWebEngineView
 import markdown
+import shutil
+import sys
 
 # ========== 新增：信号对象 ==========
 class WorkerSignals(QObject):
@@ -52,7 +54,7 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Markdown 批量转 Word")
         self.setGeometry(100, 100, 1200, 800)
         self.is_dark = False
-        self.setStyleSheet(open("ui/style.qss", encoding="utf-8").read())
+        self.setStyleSheet(open(get_qss_path(), encoding="utf-8").read())
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
         self.setAcceptDrops(True)
@@ -324,6 +326,9 @@ class MainWindow(QMainWindow):
             self.output_dir = d
             self.console_status.setText(f"输出文件夹：{d}")
 
+    def is_latex_installed(self):
+        return shutil.which("xelatex") is not None
+
     def start_convert(self):
         files = [self.file_list.item(i).text() for i in range(self.file_list.count())]
         if not files:
@@ -342,6 +347,17 @@ class MainWindow(QMainWindow):
             self.out_fmt = "docx"
             self.ext = ".docx"
         elif "PDF" in fmt:
+            if not self.is_latex_installed():
+                from PySide6.QtWidgets import QMessageBox
+                import webbrowser
+                QMessageBox.warning(
+                    self,
+                    "缺少 LaTeX 环境",
+                    "导出 PDF 需要先安装 LaTeX（如 MiKTeX 或 TeX Live）。\n\n即将打开官网下载页面，请下载安装后重试。"
+                )
+                webbrowser.open("https://miktex.org/download")
+                self.export_btn.setEnabled(True)
+                return
             self.out_fmt = "pdf"
             self.ext = ".pdf"
         elif "HTML" in fmt:
@@ -505,3 +521,12 @@ class MainWindow(QMainWindow):
     def decrease_font(self):
         self.font_size = max(self.font_size - 2, 8)
         self.update_preview()
+
+def get_qss_path():
+    if getattr(sys, 'frozen', False):
+        # 打包后
+        base_path = sys._MEIPASS
+    else:
+        # 源码运行
+        base_path = os.path.dirname(os.path.abspath(__file__))
+    return os.path.join(base_path, "ui", "style.qss")
