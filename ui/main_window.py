@@ -11,6 +11,7 @@ from PySide6.QtWebEngineWidgets import QWebEngineView
 import markdown
 import shutil
 import sys
+import webbrowser
 
 # ========== 新增：信号对象 ==========
 class WorkerSignals(QObject):
@@ -51,6 +52,9 @@ class ConvertTask(QRunnable):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        if not self.check_pandoc():
+            self.close()
+            return
         self.setWindowTitle("Markdown 批量转 Word")
         self.setGeometry(100, 100, 1200, 800)
         self.is_dark = False
@@ -522,11 +526,28 @@ class MainWindow(QMainWindow):
         self.font_size = max(self.font_size - 2, 8)
         self.update_preview()
 
+    def check_pandoc(self):
+        if getattr(sys, 'frozen', False):
+            base_path = sys._MEIPASS
+        else:
+            base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        pandoc_path = os.path.join(base_path, "resources", "pandoc.exe")
+        if not os.path.exists(pandoc_path):
+            QMessageBox.warning(
+                self,
+                "缺少 pandoc.exe",
+                "未检测到 pandoc.exe，请手动下载并放入 resources 文件夹。\n即将打开 Pandoc 官网。"
+            )
+            webbrowser.open("https://github.com/jgm/pandoc/releases")
+            return False
+        return True
+
 def get_qss_path():
     if getattr(sys, 'frozen', False):
         # 打包后
         base_path = sys._MEIPASS
+        return os.path.join(base_path, "ui", "style.qss")
     else:
-        # 源码运行
-        base_path = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(base_path, "ui", "style.qss")
+        # 源码运行，回到项目根目录
+        base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_path, "ui", "style.qss")
