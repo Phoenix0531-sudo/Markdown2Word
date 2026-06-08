@@ -1,8 +1,30 @@
-﻿converter/__pycache__
+# Byte-compiled
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution
+build/
+dist/
+*.egg-info/
+*.spec
+
+# Environments
+.env
+.venv
+venv/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Project specific
 resources/pandoc.exe
-build
-dist
-Releases/Markdown2Word-win64-V1.0.0/resources/pandoc.exe
-Releases
-resources
-ui/__pycache__
+Releases/
