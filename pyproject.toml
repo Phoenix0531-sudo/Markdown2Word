@@ -1,0 +1,27 @@
+[project]
+name = "markdown2word"
+version = "0.1.0"
+description = "基于 PySide6 与 Pandoc 的 Markdown 批量转 Word"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Phoenix0531-sudo" }]
+dependencies = [
+    "PySide6>=6.4.0",
+    "pypandoc>=1.11",
+    "markdown>=3.3"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

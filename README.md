@@ -232,3 +232,7 @@ Markdown2Word/
 ---
 
 <div align="center"><strong>Made for the technical writing and academic community</strong></div>
+
+## License
+
+[MIT](LICENSE) — free for commercial use with attribution.
