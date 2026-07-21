@@ -2,6 +2,12 @@
 
 # Markdown2Word
 
+**Batch Markdown to Word converter with PySide6 and Pandoc**
+
+[English](README.md) | [中文](README.zh-CN.md)
+
+![CI](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml/badge.svg)
+
 **专业级批量 Markdown 转 Word 桌面应用 | Batch Markdown to Word Converter**
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
