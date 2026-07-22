@@ -1,60 +1,41 @@
 # Markdown2Word
 
-**Markdown 批量转 Word/PDF：Pandoc 引擎 + PySide6 外壳。**
+**Markdown 批量转 Word/PDF 桌面工具：递归目录树、Pandoc 引擎、PySide6 外壳。**
 
 [English](README.md) | [中文](README.zh-CN.md)
 
 [![CI](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml/badge.svg)](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-选文件夹，保留目录树；中文 PDF 走 XeLaTeX + 雅黑。
+选择含 `.md` 的输入目录，输出 `docx` 或 `pdf`，在输出根下**保留相对目录结构**。转换交给 **Pandoc**（`pypandoc` / helper），本仓库是批量与 UI 壳，不是重写 Pandoc。
 
 ## 预览
 
 ![Markdown2Word](docs/screenshots/preview.png)
 
-## 功能
+## 核心路径
 
-- 批量转换目录树中的 .md
-- Pandoc 驱动 docx / pdf 输出
-- 输出根下保留嵌套目录
-- PDF 路径注入 XeLaTeX + 微软雅黑
-- CI 用 mock Pandoc，不需要 GUI
+`converter/batch_converter.py`：`**/*.md` 递归枚举 → 镜像输出路径 → `convert_md_to_any(...)`；可选 `progress_callback`。
 
-## 快速开始
+PDF 中文路径在 helper 中注入 XeLaTeX + 微软雅黑等变量（需本机 TeX 环境）。
 
-### 安装
+## 安装运行
 
 ```bash
 git clone https://github.com/Phoenix0531-sudo/Markdown2Word.git
 cd Markdown2Word
-pip install -r requirements.txt
-# Pandoc on PATH; Chinese PDF needs XeLaTeX + YaHei
-```
-
-### 使用
-
-```bash
+pip install -r requirements.txt   # 需 PATH 上有 pandoc
 python main.py
+pytest tests/                     # mock Pandoc，无 GUI
 ```
 
-```python
-from converter.batch_converter import batch_convert
-batch_convert("md_root", "out", fmt="docx")
-```
+Python **>= 3.10**。
 
-## 项目结构
+## 范围
 
-```
-main.py
-converter/  ui/
-tests/
-```
-
-## 说明
-
-不是所见即所得 Markdown IDE，也不是多用户转换 API。
+- **做：** 批量转换、保结构、桌面交互、可选 template  
+- **不做：** 云协作编辑器、任意 HTML 的完美排版、多用户 API  
 
 ## 许可证
 
-MIT。在注明出处的前提下可商业使用（以 LICENSE 为准）。详见 [LICENSE](LICENSE)。
+MIT。详见 [LICENSE](LICENSE)。

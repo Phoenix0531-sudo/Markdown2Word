@@ -1,60 +1,81 @@
 # Markdown2Word
 
-**Batch Markdown to Word/PDF converter: Pandoc engine with a PySide6 shell.**
+**Batch Markdown → Word/PDF desktop converter: recursive folder tree, Pandoc engine, PySide6 shell.**
 
 [English](README.md) | [中文](README.zh-CN.md)
 
 [![CI](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml/badge.svg)](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Folder in, tree preserved, Chinese PDF via XeLaTeX + YaHei.
+Pick an input folder of `.md` files, choose `docx` or `pdf`, keep the relative directory structure under the output root. Conversion is delegated to **Pandoc** via `pypandoc` / helper code — this app is the batch + UI shell, not a reimplementation of Pandoc.
 
 ## Preview
 
 ![Markdown2Word](docs/screenshots/preview.png)
 
-## Features
+## Core conversion path (real code)
 
-- Batch convert directory trees of .md files
-- DOCX / PDF outputs driven by Pandoc
-- Nested folder structure preserved under the output root
-- PDF path injects XeLaTeX + Microsoft YaHei variables
-- CI tests mock Pandoc (no GUI required)
+`converter/batch_converter.py`:
 
-## Get started
+```python
+md_files = glob.glob(os.path.join(input_dir, '**/*.md'), recursive=True)
+for md_file in md_files:
+    rel_path = os.path.relpath(md_file, input_dir)
+    out_path = ... same tree ... + f'.{fmt}'
+    convert_md_to_any(md_file, out_path, fmt, template)
+```
 
-### Install
+Optional `progress_callback(idx, total, md_file)` for the UI progress bar.
+
+`converter/pandoc_helper.py` wraps format-specific Pandoc invocation (including PDF variables for Chinese via XeLaTeX + Microsoft YaHei when configured).
+
+## Layout
+
+```
+main.py                 # desktop entry
+ui/                     # PySide6 windows / widgets
+converter/
+  batch_converter.py
+  pandoc_helper.py
+config/
+tests/                  # Pandoc mocked — CI does not need a GUI
+```
+
+## Install
 
 ```bash
 git clone https://github.com/Phoenix0531-sudo/Markdown2Word.git
 cd Markdown2Word
 pip install -r requirements.txt
-# Pandoc on PATH; Chinese PDF needs XeLaTeX + YaHei
+# requires Pandoc on PATH
+# Chinese PDF: XeLaTeX + Microsoft YaHei (or edit PDF vars)
 ```
 
-### Usage
+Python **>= 3.10**. Deps: PySide6, pypandoc, markdown.
+
+## Run
 
 ```bash
 python main.py
 ```
 
+Library:
+
 ```python
 from converter.batch_converter import batch_convert
-batch_convert("md_root", "out", fmt="docx")
+batch_convert("notes/", "out/", fmt="docx")
+batch_convert("notes/", "out/", fmt="pdf", template=None)
 ```
 
-## Project layout
-
-```
-main.py
-converter/  ui/
-tests/
+```bash
+pytest tests/
 ```
 
-## Notes
+## Scope
 
-Not a WYSIWYG Markdown IDE and not a multi-user conversion API.
+- **In:** recursive batch convert, structure-preserving outputs, desktop UX, optional template
+- **Out:** collaborative cloud editor, perfect CSS-print fidelity for arbitrary HTML, multi-user API
 
 ## License
 
-MIT. Free for commercial use with attribution where applicable. See [LICENSE](LICENSE).
+MIT. See [LICENSE](LICENSE).
