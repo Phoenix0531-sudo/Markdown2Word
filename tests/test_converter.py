@@ -35,7 +35,7 @@ def test_batch_convert_discovers_nested_md(tmp_path, monkeypatch):
     assert (dst / "a" / "one.docx").exists()
 
 
-def test_pdf_extra_args_include_xelatex(monkeypatch):
+def test_pdf_extra_args_include_xelatex(tmp_path, monkeypatch):
     from converter import pandoc_helper
 
     seen = {}
@@ -43,16 +43,14 @@ def test_pdf_extra_args_include_xelatex(monkeypatch):
     def fake_convert_file(md_path, to=None, outputfile=None, extra_args=None):
         seen["to"] = to
         seen["args"] = list(extra_args or [])
+        Path(outputfile).parent.mkdir(parents=True, exist_ok=True)
         Path(outputfile).write_text("pdf", encoding="utf-8")
 
     monkeypatch.setattr(pandoc_helper.pypandoc, "convert_file", fake_convert_file)
-    out = Path("D:/3_Code_Projects/Markdown2Word") / "_tmp_out.pdf"
-    try:
-        pandoc_helper.convert_md_to_any("x.md", str(out), "pdf")
-        assert seen["to"] == "pdf"
-        joined = " ".join(seen["args"])
-        assert "xelatex" in joined
-        assert "Microsoft YaHei" in joined
-    finally:
-        if out.exists():
-            out.unlink()
+    out = tmp_path / "out.pdf"
+    pandoc_helper.convert_md_to_any("x.md", str(out), "pdf")
+    assert seen["to"] == "pdf"
+    joined = " ".join(seen["args"])
+    assert "xelatex" in joined
+    assert "Microsoft YaHei" in joined
+    assert out.exists()
