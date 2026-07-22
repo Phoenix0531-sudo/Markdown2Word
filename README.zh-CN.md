@@ -1,81 +1,85 @@
 # Markdown2Word
 
-**基于 PySide6 与 Pandoc 的 Markdown 批量转 Word**
+**批量 Markdown 转 Word/PDF 桌面工具（PySide6 + Pandoc）**
 
 [English](README.md) | [中文](README.zh-CN.md)
 
 ![CI](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml/badge.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-基于 PySide6 与 Pandoc 的 Markdown 批量转 Word。
+Markdown2Word 是一个**桌面端批量转换工具**：选择含 `.md` 的目录、选定输出格式，底层用 **Pandoc**，界面用 PySide6。PDF 走 XeLaTeX，并优先使用**微软雅黑**以改善中文排版。
 
-> 作者：[Phoenix0531-sudo](https://github.com/Phoenix0531-sudo) · 欢迎学习、二次开发与**商业使用**，请保留本仓库署名与许可证声明。
+它是本地生产力工具，不是云服务，也不是完整 Markdown IDE。
 
-## 技术栈
+## 为什么做这个
 
-Python · PySide6 · Pandoc
+命令行 Pandoc 很强，但不适合“整夹批量、嵌套目录、中文 PDF”的日常操作。本工具把同一引擎包进小 GUI，做到「选目录 → 转换」。
 
-## 功能特性
+## 功能
 
-- 批量转换
-- 桌面 GUI
-- Pandoc 管道
+- 递归批量转换 Markdown
+- 输出格式由 Pandoc 决定（常用 **docx** / **pdf**）
+- 输出目录保留相对路径结构
+- PDF 自动加 `--pdf-engine=xelatex` 与雅黑字体变量
+- 可选 Pandoc `--template`
 
-## 快速开始
+## 环境要求
+
+- 建议 Python 3.10+
+- 系统 `PATH` 中有 [Pandoc](https://pandoc.org/)
+- 出 PDF 需要带 XeLaTeX 的 TeX 发行版；中文 PDF 需本机有雅黑等字体
+
+## 安装
 
 ```bash
 git clone https://github.com/Phoenix0531-sudo/Markdown2Word.git
 cd Markdown2Word
+python -m venv .venv
+# Windows: .venv\Scripts\activate
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
+## 使用
+
+图形界面：
+
 ```bash
-pip install -r requirements.txt
 python main.py
 ```
 
-更完整的英文说明见 [README.md](README.md)。
+无界面批量：
 
-## 仓库结构（摘要）
+```python
+from converter.batch_converter import batch_convert
 
-```
-Markdown2Word/
-├─ .github/
-├─ config/
-├─ converter/
-├─ docs/
-├─ scripts/
-├─ ui/
-├─ utils/
-├─ CHANGELOG.md
-├─ Dockerfile
-├─ LICENSE
-├─ main.py
-├─ README.md
-├─ README.zh-CN.md
-├─ requirements.txt
+batch_convert("path/to/md_root", "path/to/out", fmt="docx")
 ```
 
-## 测试
+单文件：
 
-```bash
-pip install pytest
-pytest -q
+```python
+from converter.pandoc_helper import convert_md_to_any
+
+convert_md_to_any("note.md", "note.docx", "docx")
+convert_md_to_any("note.md", "note.pdf", "pdf")
 ```
 
-仓库内 `tests/` 至少包含 smoke 测试；有完整测试套件时以 CI 为准。
+## 目录结构
 
-## CI
+```
+main.py              # Qt 入口
+converter/           # pandoc 封装与批量逻辑
+ui/                  # 主窗口
+tests/               # 业务测（批量发现、PDF 参数；mock pandoc）
+```
 
-GitHub Actions（`push` / `pull_request`）会：
+## 明确不做
 
-- 安装依赖（requirements / pyproject）
-- 运行 `pytest`（**硬失败**）
-- 尽力做语法/结构检查
+- 不是所见即所得编辑器
+- 不是多用户转换服务
+- PDF 效果仍取决于本机 TeX 与字体
 
 ## 许可证
 
-[MIT](LICENSE) — 可自由使用、修改、分发与**商用**，需保留版权与许可声明（提及本仓库 / 作者即可）。
-
-## 关于
-
-维护者：[Phoenix0531-sudo](https://github.com/Phoenix0531-sudo)
+MIT。可在署名前提下商用。见 [LICENSE](LICENSE)。
