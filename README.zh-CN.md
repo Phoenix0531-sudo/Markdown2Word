@@ -1,26 +1,25 @@
 # Markdown2Word
 
-**基于 Pandoc + PySide6 的 Markdown 批量转 Word/PDF 桌面工具。**
+**Markdown 批量转 Word/PDF：Pandoc 引擎 + PySide6 外壳。**
 
 [English](README.md) | [中文](README.zh-CN.md)
 
 [![CI](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml/badge.svg)](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-基于 Pandoc + PySide6 的 Markdown 批量转 Word/PDF 桌面工具。
+选文件夹，保留目录树；中文 PDF 走 XeLaTeX + 雅黑。
 
-选文件夹 · 保留目录树 · 中文 PDF（XeLaTeX + 雅黑）。
+## 预览
 
+![Markdown2Word](docs/screenshots/preview.png)
 
 ## 功能
 
-- 📂 批量转换目录树中的 `.md`
-- 📄 Pandoc 驱动输出（常用 **docx** / **pdf**）
-- 🌲 输出根下保留嵌套目录结构
-- 🈶 PDF 路径注入 XeLaTeX + 微软雅黑变量
-- 🧩 可选 Pandoc `--template`
-- 🧪 CI 用 mock Pandoc 的纯测试 — 不需要 GUI
+- 批量转换目录树中的 .md
+- Pandoc 驱动 docx / pdf 输出
+- 输出根下保留嵌套目录
+- PDF 路径注入 XeLaTeX + 微软雅黑
+- CI 用 mock Pandoc，不需要 GUI
 
 ## 快速开始
 
@@ -29,9 +28,8 @@
 ```bash
 git clone https://github.com/Phoenix0531-sudo/Markdown2Word.git
 cd Markdown2Word
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-# requires Pandoc on PATH; PDF needs XeLaTeX + YaHei for Chinese
+# Pandoc on PATH; Chinese PDF needs XeLaTeX + YaHei
 ```
 
 ### 使用
@@ -42,15 +40,14 @@ python main.py
 
 ```python
 from converter.batch_converter import batch_convert
-batch_convert("path/to/md_root", "path/to/out", fmt="docx")
+batch_convert("md_root", "out", fmt="docx")
 ```
 
 ## 项目结构
 
 ```
 main.py
-converter/   # pandoc_helper + batch_converter
-ui/
+converter/  ui/
 tests/
 ```
 

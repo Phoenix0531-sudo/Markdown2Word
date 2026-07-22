@@ -1,26 +1,25 @@
 # Markdown2Word
 
-**Batch Markdown → Word/PDF desktop converter powered by Pandoc + PySide6.**
+**Batch Markdown to Word/PDF converter: Pandoc engine with a PySide6 shell.**
 
 [English](README.md) | [中文](README.zh-CN.md)
 
 [![CI](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml/badge.svg)](https://github.com/Phoenix0531-sudo/Markdown2Word/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-Batch Markdown → Word/PDF desktop converter powered by Pandoc + PySide6.
+Folder in, tree preserved, Chinese PDF via XeLaTeX + YaHei.
 
-Select folder. Convert tree. Chinese PDF via XeLaTeX + YaHei.
+## Preview
 
+![Markdown2Word](docs/screenshots/preview.png)
 
 ## Features
 
-- 📂 Batch convert a directory tree of `.md` files
-- 📄 Output formats driven by Pandoc (commonly **docx** / **pdf**)
-- 🌲 Nested folder structure preserved under the output root
-- 🈶 PDF path injects XeLaTeX + Microsoft YaHei variables
-- 🧩 Optional Pandoc `--template`
-- 🧪 Pure tests with Pandoc mocked — no GUI required on CI
+- Batch convert directory trees of .md files
+- DOCX / PDF outputs driven by Pandoc
+- Nested folder structure preserved under the output root
+- PDF path injects XeLaTeX + Microsoft YaHei variables
+- CI tests mock Pandoc (no GUI required)
 
 ## Get started
 
@@ -29,9 +28,8 @@ Select folder. Convert tree. Chinese PDF via XeLaTeX + YaHei.
 ```bash
 git clone https://github.com/Phoenix0531-sudo/Markdown2Word.git
 cd Markdown2Word
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-# requires Pandoc on PATH; PDF needs XeLaTeX + YaHei for Chinese
+# Pandoc on PATH; Chinese PDF needs XeLaTeX + YaHei
 ```
 
 ### Usage
@@ -42,15 +40,14 @@ python main.py
 
 ```python
 from converter.batch_converter import batch_convert
-batch_convert("path/to/md_root", "path/to/out", fmt="docx")
+batch_convert("md_root", "out", fmt="docx")
 ```
 
 ## Project layout
 
 ```
 main.py
-converter/   # pandoc_helper + batch_converter
-ui/
+converter/  ui/
 tests/
 ```
 
